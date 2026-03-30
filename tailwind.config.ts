@@ -19,7 +19,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["Playfair Display", "Georgia", "serif"],
+        display: ["Oswald", "Arial Narrow", "sans-serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
@@ -56,10 +56,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        gold: {
-          DEFAULT: "hsl(var(--gold))",
-          light: "hsl(var(--gold-light))",
-          dark: "hsl(var(--gold-dark))",
+        mil: {
+          green: "hsl(var(--mil-green))",
+          khaki: "hsl(var(--mil-khaki))",
+          red: "hsl(var(--mil-red))",
+          dark: "hsl(var(--mil-dark))",
         },
       },
       borderRadius: {

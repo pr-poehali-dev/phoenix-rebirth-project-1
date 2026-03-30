@@ -2,75 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap");
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 20% 10%;
+    --background: 0 0% 96%;
+    --foreground: 120 10% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 120 10% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 120 10% 10%;
 
-    --primary: 43 74% 49%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 120 30% 22%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 220 20% 10%;
+    --secondary: 60 15% 50%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 220 14% 96%;
-    --accent-foreground: 220 20% 10%;
+    --accent: 0 75% 42%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 75% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 43 74% 49%;
+    --border: 120 8% 80%;
+    --input: 120 8% 80%;
+    --ring: 120 30% 22%;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
-    --gold: 43 74% 49%;
-    --gold-light: 43 80% 60%;
-    --gold-dark: 43 70% 35%;
+    --mil-green: 120 30% 22%;
+    --mil-khaki: 60 20% 42%;
+    --mil-red: 0 75% 42%;
+    --mil-dark: 120 15% 12%;
   }
 
   .dark {
-    --background: 220 20% 6%;
-    --foreground: 0 0% 95%;
+    --background: 120 15% 8%;
+    --foreground: 0 0% 92%;
 
-    --card: 220 20% 8%;
-    --card-foreground: 0 0% 95%;
+    --card: 120 15% 11%;
+    --card-foreground: 0 0% 92%;
 
-    --popover: 220 20% 8%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 120 15% 11%;
+    --popover-foreground: 0 0% 92%;
 
-    --primary: 43 74% 49%;
-    --primary-foreground: 220 20% 6%;
+    --primary: 120 25% 32%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 60 12% 28%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 220 15% 15%;
-    --muted-foreground: 220 9% 65%;
+    --muted: 120 12% 16%;
+    --muted-foreground: 0 0% 58%;
 
-    --accent: 220 15% 15%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 0 70% 48%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive: 0 70% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 18%;
-    --ring: 43 74% 49%;
+    --border: 120 10% 18%;
+    --input: 120 10% 18%;
+    --ring: 120 25% 32%;
 
-    --gold: 43 74% 49%;
-    --gold-light: 43 80% 60%;
-    --gold-dark: 43 70% 35%;
+    --mil-green: 120 25% 32%;
+    --mil-khaki: 60 12% 38%;
+    --mil-red: 0 70% 48%;
+    --mil-dark: 120 15% 6%;
   }
 }
 
@@ -83,14 +87,59 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
   }
 }
 
-.text-gold-gradient {
-  background: linear-gradient(135deg, hsl(43, 80%, 60%) 0%, hsl(43, 74%, 49%) 50%, hsl(43, 70%, 35%) 100%);
+.text-mil-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(120, 25%, 40%) 0%,
+    hsl(120, 30%, 22%) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.sidebar-item {
+  @apply flex items-center gap-3 px-4 py-3 rounded text-sm font-medium transition-all duration-150;
+}
+
+.sidebar-item:hover {
+  @apply bg-primary/10 text-primary;
+}
+
+.sidebar-item.active {
+  @apply bg-primary text-primary-foreground;
+}
+
+.stat-card {
+  @apply bg-card border border-border rounded p-5 flex flex-col gap-2;
+}
+
+.section-label {
+  @apply text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-4;
+}
+
+.badge-rank {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 bg-primary/15 text-primary text-xs font-semibold rounded uppercase tracking-wide;
+}
+
+.badge-alert {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 bg-accent/15 text-accent text-xs font-semibold rounded uppercase tracking-wide;
+}
+
+.data-table td {
+  @apply px-4 py-3 text-sm border-b border-border;
+}
+
+.data-table th {
+  @apply px-4 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-left bg-muted;
 }
