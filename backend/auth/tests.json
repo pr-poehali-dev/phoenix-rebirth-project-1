@@ -1,0 +1,35 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Успешная авторизация",
+      "method": "POST",
+      "path": "/",
+      "body": { "personal_number": "A-271439", "password": "demo1234" },
+      "expectedStatus": 200,
+      "expectedBody": { "ok": true },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Неверный пароль",
+      "method": "POST",
+      "path": "/",
+      "body": { "personal_number": "A-271439", "password": "wrongpass" },
+      "expectedStatus": 401,
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Пустые поля",
+      "method": "POST",
+      "path": "/",
+      "body": {},
+      "expectedStatus": 400,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

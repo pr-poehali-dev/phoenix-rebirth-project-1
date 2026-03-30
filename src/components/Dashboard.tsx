@@ -22,7 +22,35 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function DashboardSection() {
+interface Soldier {
+  id: number;
+  personal_number: string;
+  full_name: string;
+  rank: string;
+  position: string;
+  unit: string;
+  division: string;
+  birth_date: string;
+  service_start: string;
+}
+
+function formatDate(iso: string) {
+  if (!iso) return "—";
+  const [y, m, d] = iso.split("-");
+  return `${d}.${m}.${y}`;
+}
+
+function calcService(startIso: string) {
+  const start = new Date(startIso);
+  const now = new Date();
+  const years = now.getFullYear() - start.getFullYear();
+  const months = now.getMonth() - start.getMonth();
+  const total = months < 0 ? years - 1 : years;
+  const rem = ((months + 12) % 12);
+  return `${total} лет ${rem} мес.`;
+}
+
+function DashboardSection({ soldier }: { soldier: Soldier }) {
   return (
     <div className="space-y-6">
       <div className="bg-card border border-border rounded p-6">
@@ -34,11 +62,11 @@ function DashboardSection() {
             <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
               <div>
                 <h1 className="font-display text-2xl font-bold uppercase tracking-wide text-foreground">
-                  Петров Александр Николаевич
+                  {soldier.full_name}
                 </h1>
                 <div className="flex flex-wrap items-center gap-3 mt-1">
-                  <span className="badge-rank">Майор</span>
-                  <span className="text-sm text-muted-foreground">Личный номер: А-271439</span>
+                  <span className="badge-rank">{soldier.rank}</span>
+                  <span className="text-sm text-muted-foreground">Личный номер: {soldier.personal_number}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -49,27 +77,27 @@ function DashboardSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-2 text-sm">
               <div>
                 <span className="text-muted-foreground">Должность:</span>{" "}
-                <span className="font-medium text-foreground">Командир роты</span>
+                <span className="font-medium text-foreground">{soldier.position}</span>
               </div>
               <div>
                 <span className="text-muted-foreground">Подразделение:</span>{" "}
-                <span className="font-medium text-foreground">3-я общевойсковая армия</span>
+                <span className="font-medium text-foreground">{soldier.division}</span>
               </div>
               <div>
                 <span className="text-muted-foreground">Воинская часть:</span>{" "}
-                <span className="font-medium text-foreground">В/ч 12345</span>
+                <span className="font-medium text-foreground">{soldier.unit}</span>
               </div>
               <div>
                 <span className="text-muted-foreground">Дата рождения:</span>{" "}
-                <span className="font-medium text-foreground">14.07.1987</span>
+                <span className="font-medium text-foreground">{formatDate(soldier.birth_date)}</span>
               </div>
               <div>
                 <span className="text-muted-foreground">Начало службы:</span>{" "}
-                <span className="font-medium text-foreground">01.09.2009</span>
+                <span className="font-medium text-foreground">{formatDate(soldier.service_start)}</span>
               </div>
               <div>
                 <span className="text-muted-foreground">Выслуга:</span>{" "}
-                <span className="font-medium text-foreground">16 лет 7 мес.</span>
+                <span className="font-medium text-foreground">{calcService(soldier.service_start)}</span>
               </div>
             </div>
           </div>
@@ -439,12 +467,14 @@ function SettingsSection() {
   );
 }
 
-export const SECTION_MAP: Record<string, React.ReactNode> = {
-  dashboard: <DashboardSection />,
-  allowance: <AllowanceSection />,
-  documents: <DocumentsSection />,
-  service: <ServiceSection />,
-  schedule: <ScheduleSection />,
-  notifications: <NotificationsSection />,
-  settings: <SettingsSection />,
-};
+export function getSectionMap(soldier: Soldier): Record<string, React.ReactNode> {
+  return {
+    dashboard: <DashboardSection soldier={soldier} />,
+    allowance: <AllowanceSection />,
+    documents: <DocumentsSection />,
+    service: <ServiceSection />,
+    schedule: <ScheduleSection />,
+    notifications: <NotificationsSection />,
+    settings: <SettingsSection />,
+  };
+}

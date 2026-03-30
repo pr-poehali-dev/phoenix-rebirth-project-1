@@ -1,14 +1,27 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
+import func2url from "../../backend/func2url.json";
 
-export default function LoginPage({ onLogin }: { onLogin: () => void }) {
+interface Soldier {
+  id: number;
+  personal_number: string;
+  full_name: string;
+  rank: string;
+  position: string;
+  unit: string;
+  division: string;
+  birth_date: string;
+  service_start: string;
+}
+
+export default function LoginPage({ onLogin }: { onLogin: (soldier: Soldier) => void }) {
   const [number, setNumber] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     if (!number.trim() || !password.trim()) {
@@ -20,10 +33,23 @@ export default function LoginPage({ onLogin }: { onLogin: () => void }) {
       return;
     }
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch(func2url.auth, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ personal_number: number.trim(), password: password.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setError(data.error || "Ошибка авторизации");
+        return;
+      }
+      onLogin(data.soldier);
+    } catch {
+      setError("Ошибка соединения с сервером");
+    } finally {
       setLoading(false);
-      onLogin();
-    }, 1200);
+    }
   };
 
   return (

@@ -1,6 +1,18 @@
 import Icon from "@/components/ui/icon";
 import { NAV_ITEMS } from "@/data/constants";
-import { SECTION_MAP } from "@/components/Dashboard";
+import { getSectionMap } from "@/components/Dashboard";
+
+interface Soldier {
+  id: number;
+  personal_number: string;
+  full_name: string;
+  rank: string;
+  position: string;
+  unit: string;
+  division: string;
+  birth_date: string;
+  service_start: string;
+}
 
 function Emblem() {
   return (
@@ -10,7 +22,14 @@ function Emblem() {
   );
 }
 
+function shortName(fullName: string) {
+  const parts = fullName.trim().split(" ");
+  if (parts.length < 2) return fullName;
+  return `${parts[0]} ${parts[1][0]}.${parts[2] ? parts[2][0] + "." : ""}`;
+}
+
 interface LayoutProps {
+  soldier: Soldier;
   activeSection: string;
   setActiveSection: (id: string) => void;
   sidebarOpen: boolean;
@@ -19,6 +38,7 @@ interface LayoutProps {
 }
 
 export default function Layout({
+  soldier,
   activeSection,
   setActiveSection,
   sidebarOpen,
@@ -26,6 +46,7 @@ export default function Layout({
   onLogout,
 }: LayoutProps) {
   const currentNav = NAV_ITEMS.find(n => n.id === activeSection)!;
+  const sectionMap = getSectionMap(soldier);
 
   return (
     <div className="min-h-screen bg-background dark flex flex-col">
@@ -60,7 +81,7 @@ export default function Layout({
           <div className="w-8 h-8 rounded bg-primary/20 border border-primary/30 flex items-center justify-center">
             <Icon name="User" size={14} className="text-primary" />
           </div>
-          <span className="hidden sm:block text-sm font-medium text-foreground">Петров А.Н.</span>
+          <span className="hidden sm:block text-sm font-medium text-foreground">{shortName(soldier.full_name)}</span>
         </div>
       </header>
 
@@ -112,7 +133,7 @@ export default function Layout({
               <span className="text-foreground font-medium">{currentNav.label}</span>
             </div>
 
-            {SECTION_MAP[activeSection]}
+            {sectionMap[activeSection]}
           </div>
         </main>
       </div>
